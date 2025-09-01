@@ -398,12 +398,15 @@ export default class TemplateManager {
               const realPixelCenterBlue = tilePixels[realPixelCenter + 2];
               const realPixelCenterAlpha = tilePixels[realPixelCenter + 3];
 
+              const realPixelColor = [realPixelCenterRed, realPixelCenterGreen, realPixelCenterBlue];
+              const templatePixelColor = [templatePixelCenterRed, templatePixelCenterGreen, templatePixelCenterBlue];
+
               // IF the alpha of the pixel is less than 64...
               if (realPixelCenterAlpha < 64) {
                 // Unpainted -> neither painted nor wrong
 
                 // ELSE IF the pixel matches the template center pixel color
-              } else if (isColorEquals([realPixelCenterRed, realPixelCenterGreen, realPixelCenterBlue], [templatePixelCenterRed, templatePixelCenterGreen, templatePixelCenterBlue], 2)) {
+              } else if (isColorEquals(realPixelColor, templatePixelColor, 2)) {
                 paintedCount++; // ...the pixel is painted correctly
               } else {
                 wrongCount++; // ...the pixel is NOT painted correctly
@@ -414,8 +417,7 @@ export default class TemplateManager {
                   if(template.pixelCoords) {
                     const localX = Number(template.pixelCoords[0] + Math.floor(x / this.drawMult));
                     const localY = Number(template.pixelCoords[1] + Math.floor(y / this.drawMult));
-                    localCoords[0] = localX;
-                    localCoords[1] = localY;
+                    localCoords = [localX, localY];
                     // not sure the tileCoords ever is null when pixelCoords isn't
                     if (template.tileCoords) {
                       absoluteCoords[0] = template.tileCoords[0] +  Math.floor(localX / this.tileSize);
@@ -428,8 +430,8 @@ export default class TemplateManager {
                   firstWrongPixel = {
                     localCoords: localCoords,
                     absoluteCoords: absoluteCoords,
-                    actualColor: [realPixelCenterRed, realPixelCenterGreen, realPixelCenterBlue],
-                    expectedColor: [templatePixelCenterRed, templatePixelCenterGreen, templatePixelCenterBlue]
+                    actualColor: realPixelColor,
+                    expectedColor: templatePixelColor
                   };
                 }
               }
