@@ -209,6 +209,10 @@ export default class TemplateManager {
 
   }
 
+  getColorName(color) {
+    return `${color[0]}, ${color[1]}, ${color[2]}`; 
+  }
+
   /** Draws all templates on the specified tile.
    * This method handles the rendering of template overlays on individual tiles.
    * @param {File} tileBlob - The pixels that are placed on a tile
