@@ -209,10 +209,6 @@ export default class TemplateManager {
 
   }
 
-  getColorName(color) {
-    return `${color[0]}, ${color[1]}, ${color[2]}`; 
-  }
-
   /** Draws all templates on the specified tile.
    * This method handles the rendering of template overlays on individual tiles.
    * @param {File} tileBlob - The pixels that are placed on a tile
@@ -535,8 +531,8 @@ export default class TemplateManager {
       let wrongPixelInfo = "";
       if (aggWrong > 0 && firstWrongPixel) {
         wrongPixelInfo = `First wrong at (${firstWrongPixel.x}, ${firstWrongPixel.y}): ` +
-          `Actual ${getColorName(firstWrongPixel.actualColor)}, ` +
-          `Expected ${getColorName(firstWrongPixel.expectedColor)}`;
+          `Actual ${firstWrongPixel.actualColor[0]}, ${firstWrongPixel.actualColor[1]}, ${firstWrongPixel.actualColor[2]}, ` +
+          `Expected ${firstWrongPixel.expectedColor[0]}, ${firstWrongPixel.expectedColor[1]}, ${firstWrongPixel.expectedColor[2]}`;
       }
 
       this.overlay.handleDisplayStatus(
