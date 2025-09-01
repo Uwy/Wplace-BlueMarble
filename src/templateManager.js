@@ -420,6 +420,16 @@ export default class TemplateManager {
                     localCoords = [localX, localY];
                     // not sure the tileCoords ever is null when pixelCoords isn't
                     if (template.tileCoords) {
+                      console.log("----------------");
+                      console.log({
+                        "tileSize": this.tileSize,
+                        "drawMult": this.drawMult,
+                        "wrongPixeLocalCoords": localCoords,
+                        "tileCoords": template.tileCoords,
+                        "pixelCoords": template.pixelCoords,
+                      });
+                      console.log("----------------");
+
                       absoluteCoords[0] = template.tileCoords[0] +  Math.floor(localX / this.tileSize);
                       absoluteCoords[1] = template.tileCoords[1] +  Math.floor(localY / this.tileSize);
                       absoluteCoords[2] = localX % this.tileSize;
