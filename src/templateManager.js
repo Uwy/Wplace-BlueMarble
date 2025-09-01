@@ -408,11 +408,28 @@ export default class TemplateManager {
               } else {
                 wrongCount++; // ...the pixel is NOT painted correctly
                 if (!firstWrongPixel) {
-                  const localX = Number(template.pixelCoords?.[0] || 0) + Math.floor(x / this.drawMult);
-                  const localY = Number(template.pixelCoords?.[1] || 0) + Math.floor(y / this.drawMult);
+                  let localCoords = [0,0];
+                  let absoluteCoords = [0,0,0,0];
+
+                  if(template.pixelCoords) {
+                    const localX = Number(template.pixelCoords[0] + Math.floor(x / this.drawMult));
+                    const localY = Number(template.pixelCoords[1] + Math.floor(y / this.drawMult));
+                    localCoords[0] = localX;
+                    localCoords[1] = localY;
+                    // not sure the tileCoords ever is null when pixelCoords isn't
+                    if (template.tileCoords) {
+                      absoluteCoords[0] = template.tileCoords[0] +  Math.floor(localX / this.tileSize);
+                      absoluteCoords[1] = template.tileCoords[1] +  Math.floor(localY / this.tileSize);
+                      absoluteCoords[2] = localX % this.tileSize;
+                      absoluteCoords[3] = localY % this.tileSize;
+                    }
+                  }
+
+
+                  tileSize
                   firstWrongPixel = {
-                    x: localX,
-                    y: localY,
+                    localCoords: localCoords,
+                    absoluteCoords: absoluteCoords,
                     actualColor: [realPixelCenterRed, realPixelCenterGreen, realPixelCenterBlue],
                     expectedColor: [templatePixelCenterRed, templatePixelCenterGreen, templatePixelCenterBlue]
                   };
@@ -528,11 +545,15 @@ export default class TemplateManager {
       const requiredStr = new Intl.NumberFormat().format(totalRequired);
       const wrongStr = new Intl.NumberFormat().format(totalRequired - aggPainted); // Used to be aggWrong, but that is bugged
 
+      //(Tl X: 1845, Tl Y: 1261, Px X: 484, Px Y: 492)
       let wrongPixelInfo = "";
       if (aggWrong > 0 && firstWrongPixel) {
-        wrongPixelInfo = `First wrong at (${firstWrongPixel.x}, ${firstWrongPixel.y}): ` +
-          `Actual ${getColorName(firstWrongPixel.actualColor, 2)}, ` +
-          `Expected ${getColorName(firstWrongPixel.expectedColor, 2)}`;
+        wrongPixelInfo = `First wrong:\n` + 
+          `    Relative: (X: ${firstWrongPixel.localCoords[0]}, Y: ${firstWrongPixel.localCoords[1]})\n` +
+          `    Absolute: (Tl X: ${firstWrongPixel.absoluteCoords[0]}, Tl Y: ${firstWrongPixel.absoluteCoords[1]}, `+ 
+            `Px X: ${firstWrongPixel.absoluteCoords[2]}, Px Y: ${firstWrongPixel.absoluteCoords[3]})\n` +
+          `    Actual ${getColorName(firstWrongPixel.actualColor, 2)}\n` +
+          `    Expected ${getColorName(firstWrongPixel.expectedColor, 2)}\n`;
       }
 
       this.overlay.handleDisplayStatus(

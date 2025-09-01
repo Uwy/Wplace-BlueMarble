@@ -165,7 +165,7 @@ export function getColorName(color, tolerance) {
   });
 
   if (!retVal) {
-    return `${color[0]}, ${color[1]}, ${color[2]}`;
+    return `(${color[0]}, ${color[1]}, ${color[2]})`;
   }
   return retVal.name;
 }
