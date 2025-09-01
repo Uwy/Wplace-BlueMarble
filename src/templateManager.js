@@ -403,7 +403,7 @@ export default class TemplateManager {
                 // Unpainted -> neither painted nor wrong
 
                 // ELSE IF the pixel matches the template center pixel color
-              } else if (isColorEquals([realPixelCenterRed, realPixelCenterGreen, realPixelCenterBlue], [templatePixelCenterRed, templatePixelCenterGreen, templatePixelCenterBlue]), 2) {
+              } else if (isColorEquals([realPixelCenterRed, realPixelCenterGreen, realPixelCenterBlue], [templatePixelCenterRed, templatePixelCenterGreen, templatePixelCenterBlue], 2)) {
                 paintedCount++; // ...the pixel is painted correctly
               } else {
                 wrongCount++; // ...the pixel is NOT painted correctly
@@ -531,8 +531,8 @@ export default class TemplateManager {
       let wrongPixelInfo = "";
       if (aggWrong > 0 && firstWrongPixel) {
         wrongPixelInfo = `First wrong at (${firstWrongPixel.x}, ${firstWrongPixel.y}): ` +
-          `Actual ${getColorName(firstWrongPixel.actualColor)}, ` +
-          `Expected ${getColorName(firstWrongPixel.expectedColor)}`;
+          `Actual ${getColorName(firstWrongPixel.actualColor, 2)}, ` +
+          `Expected ${getColorName(firstWrongPixel.expectedColor, 2)}`;
       }
 
       this.overlay.handleDisplayStatus(

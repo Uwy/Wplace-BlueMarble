@@ -159,9 +159,9 @@ export function isColorEquals(firstColor, secondColor, tolerance) {
   return true;
 }
 
-export function getColorName(color) {
+export function getColorName(color, tolerance) {
   let retVal = colorpalette.find(x => {
-    return isColorEquals(x.rgb, color, 2);
+    return isColorEquals(x.rgb, color, tolerance);
   });
 
   if (!retVal) {
