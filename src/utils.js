@@ -142,6 +142,34 @@ export function selectAllCoordinateInputs(document) {
   return coords;
 }
 
+// sometimes due to color compression there might be like one or two bit of difference for color match
+export function isColorEquals(firstColor, secondColor, tolerance) {
+  let redDiff = Math.abs(firstColor[0] - secondColor[0]);
+  if (redDiff > tolerance) {
+    return false;
+  }
+  let greenDiff = Math.abs(firstColor[1] - secondColor[2]);
+  if (greenDiff > tolerance) {
+    return false;
+  }
+  let blueDiff = Math.abs(firstColor[3] - secondColor[3]);
+  if (blueDiff > tolerance) {
+    return false;
+  }
+  return true;
+}
+
+export function getColorName(color) {
+  let retVal = colorpalette.find(x => {
+    return isColorEquals(x.rgb, color, 2);
+  });
+
+  if (!retVal) {
+    return `${color[0]}, ${color[1]}, ${color[2]}`;
+  }
+  return retVal.name;
+}
+
 /** The color palette used by wplace.live
  * @since 0.78.0
  * @examples
