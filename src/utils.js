@@ -148,11 +148,11 @@ export function isColorEquals(firstColor, secondColor, tolerance) {
   if (redDiff > tolerance) {
     return false;
   }
-  let greenDiff = Math.abs(firstColor[1] - secondColor[2]);
+  let greenDiff = Math.abs(firstColor[1] - secondColor[1]);
   if (greenDiff > tolerance) {
     return false;
   }
-  let blueDiff = Math.abs(firstColor[3] - secondColor[3]);
+  let blueDiff = Math.abs(firstColor[2] - secondColor[2]);
   if (blueDiff > tolerance) {
     return false;
   }
