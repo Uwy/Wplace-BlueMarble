@@ -549,11 +549,11 @@ export default class TemplateManager {
       let wrongPixelInfo = "";
       if (aggWrong > 0 && firstWrongPixel) {
         wrongPixelInfo = `First wrong:\n` + 
-          `    Relative: (X: ${firstWrongPixel.localCoords[0]}, Y: ${firstWrongPixel.localCoords[1]})\n` +
-          `    Absolute: (Tl X: ${firstWrongPixel.absoluteCoords[0]}, Tl Y: ${firstWrongPixel.absoluteCoords[1]}, `+ 
+          `Relative: (X: ${firstWrongPixel.localCoords[0]}, Y: ${firstWrongPixel.localCoords[1]})\n` +
+          `Absolute: (Tl X: ${firstWrongPixel.absoluteCoords[0]}, Tl Y: ${firstWrongPixel.absoluteCoords[1]}, `+ 
             `Px X: ${firstWrongPixel.absoluteCoords[2]}, Px Y: ${firstWrongPixel.absoluteCoords[3]})\n` +
-          `    Actual ${getColorName(firstWrongPixel.actualColor, 2)}\n` +
-          `    Expected ${getColorName(firstWrongPixel.expectedColor, 2)}\n`;
+          `Actual ${getColorName(firstWrongPixel.actualColor, 2)}\n` +
+          `Expected ${getColorName(firstWrongPixel.expectedColor, 2)}\n`;
       }
 
       this.overlay.handleDisplayStatus(
