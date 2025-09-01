@@ -216,7 +216,6 @@ export default class TemplateManager {
    * @since 0.65.77
    */
   async drawTemplateOnTile(tileBlob, tileCoords) {
-
     // Returns early if no templates should be drawn
     if (!this.templatesShouldBeDrawn) {return tileBlob;}
 
@@ -311,6 +310,8 @@ export default class TemplateManager {
       console.log(`Template:`);
       console.log(template);
 
+      const wrongBlocks = [];
+
       // Compute stats by sampling template center pixels against tile pixels,
       // honoring color enable/disable from the active template's palette
       if (tilePixels) {
@@ -351,7 +352,7 @@ export default class TemplateManager {
               const templatePixelCenterBlue = tData[templatePixelCenter + 2]; // Shread block's center pixel's BLUE value
               const templatePixelCenterAlpha = tData[templatePixelCenter + 3]; // Shread block's center pixel's ALPHA value
 
-              // Possibly needs to be removed 
+              // Possibly needs to be removed
               // Handle template transparent pixel (alpha < 64): wrong if board has any site palette color here
               // If the alpha of the center pixel is less than 64...
               if (templatePixelCenterAlpha < 64) {
@@ -370,6 +371,7 @@ export default class TemplateManager {
                   // IF the alpha of the center pixel that is placed on the canvas is greater than or equal to 64, AND the pixel is a Wplace palette color, then it is incorrect.
                   if (pa >= 64 && isSiteColor) {
                     wrongCount++;
+                    wrongBlocks.push({ gx, gy });
                   }
                 } catch (ignored) {}
 
@@ -410,6 +412,7 @@ export default class TemplateManager {
                 paintedCount++; // ...the pixel is painted correctly
               } else {
                 wrongCount++; // ...the pixel is NOT painted correctly
+                wrongBlocks.push({ gx, gy });
                 if (!firstWrongPixel) {
                   let localCoords = [0,0];
                   let absoluteCoords = [0,0,0,0];
@@ -454,6 +457,24 @@ export default class TemplateManager {
 
       // Draw the template overlay for visual guidance, honoring color filter
       try {
+        if (wrongBlocks.length > 0) {
+            const halfSpan = (this.drawMult - 1) / 2;
+            const path = new Path2D();
+            for (const { gx, gy } of wrongBlocks) {
+                const x0 = gx - halfSpan;
+                const y0 = gy - halfSpan;
+                path.rect(x0, y0, this.drawMult, this.drawMult);
+            }
+            context.save();
+            context.imageSmoothingEnabled = false;
+            context.globalCompositeOperation = 'source-over';
+            context.strokeStyle = '#FF0000';
+            context.lineWidth = 1;
+            context.shadowColor = 'rgba(255,0,0,0.8)';
+            context.shadowBlur = 2;
+            context.stroke(path);
+            context.restore();
+        }
 
         const activeTemplate = this.templatesArray?.[0]; // Get the first template
         const palette = activeTemplate?.colorPalette || {}; // Obtain the color palette of the template
