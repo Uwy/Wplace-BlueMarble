@@ -425,8 +425,6 @@ export default class TemplateManager {
                     }
                   }
 
-
-                  tileSize
                   firstWrongPixel = {
                     localCoords: localCoords,
                     absoluteCoords: absoluteCoords,
