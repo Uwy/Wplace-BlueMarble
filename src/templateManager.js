@@ -415,8 +415,8 @@ export default class TemplateManager {
                   let absoluteCoords = [0,0,0,0];
 
                   if(template.pixelCoords) {
-                    const localX = Number(template.pixelCoords[0] + Math.floor(x / this.drawMult));
-                    const localY = Number(template.pixelCoords[1] + Math.floor(y / this.drawMult));
+                    const localX = Number(template.pixelCoords[0]) + Math.floor(x / this.drawMult);
+                    const localY = Number(template.pixelCoords[1]) + Math.floor(y / this.drawMult);
                     localCoords = [localX, localY];
                     // not sure the tileCoords ever is null when pixelCoords isn't
                     if (template.tileCoords) {
@@ -430,8 +430,8 @@ export default class TemplateManager {
                       });
                       console.log("----------------");
 
-                      absoluteCoords[0] = template.tileCoords[0] +  Math.floor(localX / this.tileSize);
-                      absoluteCoords[1] = template.tileCoords[1] +  Math.floor(localY / this.tileSize);
+                      absoluteCoords[0] = Number(template.tileCoords[0]) +  Math.floor(localX / this.tileSize);
+                      absoluteCoords[1] = Number(template.tileCoords[1]) +  Math.floor(localY / this.tileSize);
                       absoluteCoords[2] = localX % this.tileSize;
                       absoluteCoords[3] = localY % this.tileSize;
                     }
